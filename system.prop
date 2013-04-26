@@ -1,0 +1,27 @@
+#
+# system.prop for K1
+#
+# The OpenGL ES API level that is natively supported by this device.
+# This is a 16.16 fixed point number
+ro.opengles.version=131072
+# Ethernet
+ro.ethernet.interface=eth0
+ro.ethernet.autoEnable=yes
+# 3G Main settings
+rild.libpath=/system/lib/libhuawei-ril.so
+rild.libargs=-d /dev/ttyACM0 -i wwan0
+ro.pad.features.modem=true
+service.ctool.3g.enable=n
+tf.enable=y
+keyguard.no_require_sim=true
+ro.radio.use-ppp=yes
+ro.radio.noril=no
+#dns
+net.ppp0.dns1=8.8.8.8
+net.ppp0.dns2=8.8.4.4
+net.dns1=8.8.8.8
+net.dns2=8.8.4.4
+# Goo Manager Information
+ro.goo.developerid=kaschemme
+ro.goo.rom=CM10-1_K1_Kaschemme
+ro.goo.version=1
