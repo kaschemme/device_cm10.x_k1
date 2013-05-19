@@ -1,3 +1,19 @@
+#
+# Copyright (C) 2011 The Android Open-Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 USE_PROPRIETARY_AUDIO_EXTENSIONS := true
 
 # inherit from the proprietary version
@@ -8,7 +24,6 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 # Board nameing
 TARGET_NO_RADIOIMAGE := true
 TARGET_BOARD_PLATFORM := tegra
-TARGET_TEGRA_VERSION := t20
 TARGET_BOOTLOADER_BOARD_NAME := ventana
 
 # Target arch settings
@@ -42,8 +57,9 @@ BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/lenovo/k1/bluetooth
 BOARD_BLUEDROID_VENDOR_CONF := device/lenovo/k1/bluetooth/vnd_tf101.txt
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/lenovo/k1/bluetooth
+
 
 #ICS Camera
 USE_CAMERA_STUB := true
