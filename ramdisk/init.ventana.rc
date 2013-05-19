@@ -253,7 +253,7 @@ service hciattach /system/bin/brcm_patchram_plus --enable_hci --scopcm=0,2,0,0,0
   class late_start
 
 # Recovery daemon: configure MSC partition
-service recoveryd /system/bin/recoveryd /dev/block/platform/sdhci-tegra.3/by-num/p5
+service recoveryd /system/bin/recoveryd /dev/block/mmcblk0p5
     disabled
     class main
     user root
