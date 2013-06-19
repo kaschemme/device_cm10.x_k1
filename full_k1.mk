@@ -36,8 +36,11 @@ $(call inherit-product, device/lenovo/k1/device_k1.mk)
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
+
 # Set those variables here to overwrite the inherited values.
 PRODUCT_NAME := full_k1
 PRODUCT_DEVICE := k1
-PRODUCT_BRAND := Android
-PRODUCT_MODEL := Full Android on K1
+PRODUCT_BRAND := lenovo
+PRODUCT_MANUFACTURER := Lenovo
+PRODUCT_MODEL := Ideapad K1
