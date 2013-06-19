@@ -17,12 +17,5 @@ tf.enable=y
 keyguard.no_require_sim=true
 ro.radio.use-ppp=yes
 ro.radio.noril=no
-#dns
-net.ppp0.dns1=8.8.8.8
-net.ppp0.dns2=8.8.4.4
-net.dns1=8.8.8.8
-net.dns2=8.8.4.4
-# Goo Manager Information
-ro.goo.developerid=kaschemme
-ro.goo.rom=CM10-1_K1_Kaschemme
-ro.goo.version=1
+debug.performance.tuning=1
+video.accelerate.hw=1
