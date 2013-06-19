@@ -48,3 +48,4 @@
 /dev/ttyHS2	0660	bluetooth	bluetooth
 /dev/ion	0666	system	system
 /dev/timerinfo	0444	system	system
+/dev/wm8903     0660    system	audio
