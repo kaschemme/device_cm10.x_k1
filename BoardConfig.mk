@@ -60,7 +60,6 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUEDROID_VENDOR_CONF := device/lenovo/k1/bluetooth/vnd_tf101.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/lenovo/k1/bluetooth
 
-
 #ICS Camera
 USE_CAMERA_STUB := true
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB -DICS_AUDIO_BLOB
@@ -87,10 +86,11 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
 BOARD_WLAN_DEVICE                := bcm4329
 WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcmdhd/parameters/firmware_path"
 WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/bcm4329.ko"
-#WIFI_DRIVER_FW_PATH_STA         := "/system/vendor/firmware/fw_bcm4329.bin"
-#WIFI_DRIVER_FW_PATH_AP          := "/system/vendor/firmware/fw_bcm4329_apsta.bin"
+WIFI_DRIVER_FW_PATH_STA         := "/system/vendor/firmware/fw_bcm4329.bin"
+WIFI_DRIVER_FW_PATH_AP          := "/system/vendor/firmware/fw_bcm4329_apsta.bin"
 WIFI_DRIVER_MODULE_NAME          := "bcm4329"
 WIFI_DRIVER_MODULE_ARG           := "iface_name=wlan0 firmware_path=/system/vendor/firmware/fw_bcm4329.bin nvram_path=/system/etc/nvram.txt"
+WIFI_BAND 			:= 802_11_ABG
 
 # Todo fix these values to the spacific sizes
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -123,3 +123,8 @@ TARGET_NO_RECOVERYIMAGE := true
 BOARD_USE_LEGACY_TOUCHSCREEN := true
 BOARD_HAVE_GPS := true
 BOARD_KERNEL_CMDLINE :=
+
+#Boot Animation
+TARGET_BOOTANIMATION_PRELOAD := true
+TARGET_BOOTANIMATION_TEXTURE_CACHE := true
+TARGET_BOOTANIMATION_USE_RGB565 := true
