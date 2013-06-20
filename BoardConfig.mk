@@ -49,10 +49,12 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_EGL_NEEDS_LEGACY_FB := true
 BOARD_EGL_CFG := vendor/lenovo/k1/proprietary/lib/egl/egl.cfg
 USE_OPENGL_RENDERER := true
-
-# Misc display settings
-BOARD_USE_SKIA_LCDTEXT := true
 BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
+# Misc display settings
+# BOARD_USE_SKIA_LCDTEXT := true
+# BOARD_USES_HGL := true
+# BOARD_USES_OVERLAY := true
+
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
