@@ -1,12 +1,12 @@
-# Release name and versioning
+# Release name
 PRODUCT_RELEASE_NAME := K1
-
-# Inherit device configuration
-$(call inherit-product, device/lenovo/k1/full_k1.mk)
 
 # Inherit some common cyanogenmod stuff.
 $(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
 $(call inherit-product, vendor/cm/config/gsm.mk)
+
+# Inherit device configuration
+$(call inherit-product, device/lenovo/k1/full_k1.mk)
 
 #
 # Setup device specific product configuration.
