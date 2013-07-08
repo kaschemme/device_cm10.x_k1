@@ -1,9 +1,10 @@
 import init.ventana.usb.rc
 
-on early-init
-    mount debugfs debugfs /sys/kernel/debug
+#on early-init
+#    mount debugfs debugfs /sys/kernel/debug
 
 on init
+    # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
 
@@ -21,13 +22,13 @@ on init
     export SECONDARY_STORAGE /storage/sdcard1
 
     # make the pathes for the external media mounts
-    mkdir /storage/sdcard1 0000 system system
-    mkdir /storage/sdcard2 0000 system system
-    mkdir /storage/usbdisk0 0000 system system
-    mkdir /storage/usbdisk1 0000 system system
-
+    mkdir /storage/sdcard1 0666 system system
+    mkdir /storage/usbdisk 0666 system system
+    symlink /storage/usbdisk /mnt/usbdisk
+    symlink /mnt/usbdisk /usbdisk
     symlink /storage/sdcard1 /external_sd
     symlink /storage/sdcard1 /mnt/external_sd
+
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
@@ -38,33 +39,54 @@ on fs
 #    # Add permissions to allow recovery
 #    chmod 0666 /dev/block/mmcblk0p5
 
+# load cifs modules
+    insmod /system/lib/modules/md4.ko
+    insmod /system/lib/modules/cifs.ko
+    insmod /system/lib/modules/tun.ko
+
+# change permissions for mtd device
+	chmod 0660 /dev/mtd/mtd0
+	chown media media /dev/mtd/mtd0
+
 on post-fs-data
+    mkdir /data/media 0775 media_rw media_rw
+
+    mkdir /data/system/inputmethod 0775 system system
+
     mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    mkdir /data/misc/wifi/hostapd 0770 wifi wifi
-    mkdir /data/nvcam 0777 media camera
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
+    mkdir /data/misc/pmlog 0770
+    mkdir /data/nvcam 0777 system system
 
     mkdir /data/misc/wminput 0776 system system
 
-    # we will remap this as /mnt/sdcard with the sdcard fuse tool
-    mkdir /data/media 0775 media_rw media_rw
-    chown media_rw media_rw /data/media
+# camera calibration
+	mkdir /data/misc/camera 0770 media media
 
-    # logs
-    mkdir /data/log 0775 root root
-    chmod 0775 /data/log
+#    # logs
+#    mkdir /data/log 0775 root root
+#    chmod 0775 /data/log
 
     # GPS
     #Create location directory, BRCM guci library stores LTO file and read/write
     # config file.
-    mkdir /data/location 0770 radio radio
-    
+#    mkdir /data/location 0777 radio radio
+
+    # for migrating download provider's cache out of the small /data/data
+#    mkdir /data/data2 0771 system system
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
 
+chown system system /sys/class/android_usb/android0/f_mass_storage/lun/file
+    chmod 0660 /sys/class/android_usb/android0/f_mass_storage/lun/file
+    chown system system /sys/class/android_usb/android0/f_rndis/ethaddr
+    chmod 0660 /sys/class/android_usb/android0/f_rndis/ethaddr
+
 on boot
+    mount debugfs /sys/kernel/debug /sys/kernel/debug
+
 # bluetooth
     # UART device
     chmod 0660 /dev/ttyHS2
@@ -91,17 +113,19 @@ on boot
     chown system system /sys/class/backlight/pwm-backlight/brightness
 
 # Sensor
-    chmod 666 /dev/nvhost-ctrl
-    chmod 666 /dev/nvhost-display
-    chmod 666 /dev/nvhost-dsi
-    chmod 666 /dev/nvhost-gr2d
-    chmod 666 /dev/nvhost-gr3d
-    chmod 666 /dev/nvhost-isp
-    chmod 666 /dev/nvhost-mpe
-    chmod 666 /dev/nvhost-vi
-    chmod 664 /sys/bus/iio/devices/device0/illuminance0_input
-    chmod 664 /sys/bus/iio/devices/device0/proximity_raw
-    chmod 664 /sys/bus/iio/devices/device0/illuminance0_calibbias
+    chmod 777 /dev/lightsensor
+    chown root root /dev/lightsensor
+    chmod 0666 /dev/nvhost-ctrl
+    chmod 0666 /dev/nvhost-display
+    chmod 0666 /dev/nvhost-dsi
+    chmod 0666 /dev/nvhost-gr2d
+    chmod 0666 /dev/nvhost-gr3d
+    chmod 0666 /dev/nvhost-isp
+    chmod 0666 /dev/nvhost-mpe
+    chmod 0666 /dev/nvhost-vi
+    chmod 0664 /sys/bus/iio/devices/device0/illuminance0_input
+    chmod 0664 /sys/bus/iio/devices/device0/proximity_raw
+    chmod 0664 /sys/bus/iio/devices/device0/illuminance0_calibbias
     write /sys/bus/iio/devices/device0/illuminance0_calibbias 8192
 
 
@@ -114,6 +138,21 @@ on boot
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load 80
     write /sys/module/cpuidle/parameters/lp2_in_idle 1
+    # allow changes
+    chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
+    chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+    chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+
+# RIL
+# Define TCP buffer sizes for hspa networks
+#   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax
+    setprop net.tcp.buffersize.umts  4096,87380,524288,4096,87380,524288
+    setprop net.tcp.buffersize.hspa  4096,87380,524288,4096,87380,524288
+    setprop net.tcp.buffersize.hsdpa 4096,87380,524288,4096,87380,524288
+    setprop net.tcp.buffersize.hsupa 4096,87380,524288,4096,87380,524288
 
 # Touchscreen Config-UI interface
    chmod 666 /sys/devices/platform/tegra-i2c.0/i2c-0/0-005a/debug_enable
@@ -142,14 +181,90 @@ on boot
     chown gps system /sys/class/gpio/gpio203/value
     chmod 0664 /sys/class/gpio/gpio203/value
 
+#++Charlie
+# For NvPowerMgs access permission
+    chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies 
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies 
+    chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 664 /sys/devices/system/cpu/cpufreq/interactive/max_boost
+    chown root system /sys/devices/system/cpu/cpufreq/interactive/max_boost
+    chmod 664 /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chown root system /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chmod 664 /sys/module/cpu_tegra/parameters/cpu_user_cap
+    chown root system /sys/module/cpu_tegra/parameters/cpu_user_cap
+    
+    chmod 664 /sys/devices/system/tegra_mc/enable
+    chmod 664 /sys/devices/system/tegra_mc/quantum
+    chmod 664 /sys/devices/system/tegra2_statmon/enable
+    chmod 664 /sys/devices/system/tegra2_statmon/sample_time
+
+#Compal Start Sam_Chiu 20110915 chown to BT 
+    chown root bluetooth /sys/EcControl/BTMAC
+    chown root bluetooth /sys/EcControl/BaseState
+    chown root bluetooth /sys/EcControl/BaseWirelessState
+    chown root bluetooth /sys/EcControl/BatCapacity
+    chown root bluetooth /sys/EcControl/BatCtlDisable
+    chown root bluetooth /sys/EcControl/BatCtlEnable
+    chown root bluetooth /sys/EcControl/BatDesignCapacity
+    chown root bluetooth /sys/EcControl/BatLifeTest
+    chown root system    /sys/EcControl/BatStatus
+    chown root bluetooth /sys/EcControl/BrightnessLevel
+    chown root bluetooth /sys/EcControl/ChargeLED
+    chown root system    /sys/EcControl/Coldboot
+    chown root bluetooth /sys/EcControl/ECRead
+    chown root bluetooth /sys/EcControl/ECWrite
+    chown root bluetooth /sys/EcControl/ECflashMode
+    chown root bluetooth /sys/EcControl/ECflashread
+    chown root bluetooth /sys/EcControl/ECflashwrite
+    chown root system    /sys/EcControl/EcVer
+    chown root bluetooth /sys/EcControl/IMEIwithBarcode
+    chown root bluetooth /sys/EcControl/LEDAndroidOff
+    chown root bluetooth /sys/EcControl/ManufactureDate
+    chown root bluetooth /sys/EcControl/MicSwitch
+    chown root bluetooth /sys/EcControl/OffLED
+    chown root bluetooth /sys/EcControl/OriStsLED
+    chown root bluetooth /sys/EcControl/PlugAction
+    chown root bluetooth /sys/EcControl/PowerLED
+    chown root bluetooth /sys/EcControl/QueryCommand
+    chown root system    /sys/EcControl/RecoveryMode
+    chown root system    /sys/EcControl/Resume
+    chown root radio     /sys/EcControl/SerialNumber
+    chown root system    /sys/EcControl/SerialNumberwithoutBarcode
+    chown root bluetooth /sys/EcControl/Shutdown
+    chown root system    /sys/EcControl/SkuNumber
+    chown root system    /sys/EcControl/Suspend
+    chown root system    /sys/EcControl/TPDLFlashStart
+    chown root system    /sys/EcControl/TPDLFlashStatus
+    chown root system    /sys/EcControl/MBID
+    chown root system    /sys/EcControl/ThreeGPower
+    chown root bluetooth /sys/EcControl/UUID
+    chown root bluetooth /sys/EcControl/WIFIMAC
+    chown root system    /sys/light/light_mode
+    #Compal End Sam_Chiu 20110915 chown to BT 
+
+    chmod 777 /etc/ppp/ip-up
+    chmod 777 /etc/ppp/ip-down
+
+# This property trigger has added to imitiate the previous behavior of "adb root".
+# The adb gadget driver used to reset the USB bus when the adbd daemon exited,
+# and the host side adb relied on this behavior to force it to reconnect with the
+# new adbd instance after init relaunches it. So now we force the USB bus to reset
+# here when adbd sets the service.adb.root property to 1.  We also restart adbd here
+# rather than waiting for init to notice its death and restarting it so the timing
+# of USB resetting and adb restarting more closely matches the previous behavior.
+on property:service.adb.root=1
+    write /sys/class/android_usb/android0/enable 0
+    restart adbd
+    write /sys/class/android_usb/android0/enable 1
+
 #++Charles
 # Bugreport
-    mkdir /data/bugreport system system
-    chmod 0777 /data/bugreport
-
-#NTFS exFAT support
-#    insmod /sbin/tntfs.ko
-#    insmod /sbin/texfat.ko
+#    mkdir /data/bugreport system system
+#    chmod 0777 /data/bugreport
+#--
+# USB
+   chown system root /sys/bus/usb/devices/usb2/power/control
 
 # RIL
 # Define TCP buffer sizes for hspa networks
@@ -161,9 +276,8 @@ on boot
 
 # Compal-Indigo-Jason Dong-20120308 begin: change to WEXT WiFi driver
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -Dwext -dd -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
+    -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
 # Compal-Indigo-Jason Dong-20120308 end
-
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
 #   user wifi
@@ -174,11 +288,6 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     oneshot
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
-    class main
-    disabled
-    oneshot
-
-service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     class main
     disabled
     oneshot
@@ -194,11 +303,6 @@ service dhcpcd_eth0 /system/bin/dhcpcd -ABKL -f/system/etc/dhcpcd/dhcpcd.conf
     oneshot
 
 service iprenew_wlan0 /system/bin/dhcpcd -n
-    class main
-    disabled
-    oneshot
-
-service iprenew_p2p /system/bin/dhcpcd -n
     class main
     disabled
     oneshot
@@ -232,31 +336,28 @@ on property:sys.cpu.late_start=1
 service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class late_start
 
-# bugreport is triggered by the VOLUME-DOWN and VOLUME-UP keys
-service bugreport /system/bin/dumpstate -d -v -o /data/storage/bugreports/bugreport
-    class main
-    disabled
-    oneshot
-    keycodes 115 114
-
 #BCM
 service hciattach /system/bin/brcm_patchram_plus --enable_hci --scopcm=0,2,0,0,0,0,0,0,0,0 \
-    --baudrate 3000000 --patchram /etc/firmware/BCM4329B1_002.002.023.0797.0863.hcd --enable_lpm /dev/ttyHS2
+    --baudrate 3000000 --patchra /etc/firmware/bcm4329.hcd --enable_lpm --tosleep=5000 --create_bdaddr /dev/ttyHS2
     class main
     user root
     group system bluetooth net_bt_admin misc
     disabled
 
 # Start GPS daemon
-  on boot
-  service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsconfig.xml
-  user gps
-  socket gps seqpacket 0666 gps system
-  group system 
+service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsconfig.xml
   class late_start
+  socket gps seqpacket 0660 gps system
+  user gps
+  group system inet sdcard_rw sdcard_r
+
+on property:init.svc.gps-daemon=running
+    wait 2
+    chown gps system /dev/socket/gps
+    chmod 0660 /dev/socket/gps
 
 # Recovery daemon: configure MSC partition
-service recoveryd /system/bin/recoveryd /dev/block/mmcblk0p5
+service recoveryd /system/bin/recoveryd /dev/block/platform/sdhci-tegra.3/by-num/p5
     disabled
     class main
     user root
@@ -287,7 +388,3 @@ service setup_fs /system/bin/setup_fs \
     user root
     group root
     oneshot
-
-# bcmdhd module load
-#insmod /system/lib/modules/bcmdhd.ko
-

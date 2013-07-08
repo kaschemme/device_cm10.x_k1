@@ -1,19 +1,4 @@
-#
-# Copyright (C) 2011 The Android Open-Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
+USE_CAMERA_STUB := true
 USE_PROPRIETARY_AUDIO_EXTENSIONS := true
 
 # inherit from the proprietary version
@@ -49,9 +34,10 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_EGL_NEEDS_LEGACY_FB := true
 BOARD_EGL_CFG := vendor/lenovo/k1/proprietary/lib/egl/egl.cfg
 USE_OPENGL_RENDERER := true
-BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
+
 # Misc display settings
-# BOARD_USE_SKIA_LCDTEXT := true
+BOARD_USE_SKIA_LCDTEXT := true
+BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 # BOARD_USES_HGL := true
 # BOARD_USES_OVERLAY := true
 
@@ -62,8 +48,10 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUEDROID_VENDOR_CONF := device/lenovo/k1/bluetooth/vnd_tf101.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/lenovo/k1/bluetooth
 
-#ICS Camera
-USE_CAMERA_STUB := true
+# USB 
+BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun/file"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun/file"
+
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB -DICS_AUDIO_BLOB
 # ICS AUDIO
 COMMON_GLOBAL_CFLAGS += -DICS_AUDIO_BLOB
@@ -107,9 +95,7 @@ BOARD_SKIP_ANDROID_DOC_BUILD := true
 
 # Audio Build Options
 BOARD_USES_GENERIC_AUDIO := false
-BOARD_USES_ALSA_AUDIO := false
-# Audio Build Options for k1
-#BOARD_USES_GENERIC_AUDIO := false
+BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_AUDIO_LEGACY := true
 
 # Recovery Options

@@ -16,23 +16,26 @@
 PRODUCT_PACKAGES := \
 	HoloSpiralWallpaper \
 	VisualizationWallpapers \
-
-# A few more packages that aren't quite used on all builds
-PRODUCT_PACKAGES += \
-  Mms
+	LiveWallpapersPicker
 
 # Camera
 PRODUCT_PACKAGES += \
     Camera
 
-# Put en_US first in the list, so make it default.
-PRODUCT_LOCALES := en_US
+# A few more packages that aren't quite used on all builds
+PRODUCT_PACKAGES += \
+  Mms
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)
 
 # This is where we'd set a backup provider if we had one
 $(call inherit-product, device/lenovo/k1/device_k1.mk)
+
+# Enable xhdpi drawables while keeping mdpi as primary source
+PRODUCT_AAPT_CONFIG := normal mdpi hdpi xhdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
 
