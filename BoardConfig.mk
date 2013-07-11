@@ -1,4 +1,4 @@
-USE_CAMERA_STUB := true
+USE_CAMERA_STUB := false
 USE_PROPRIETARY_AUDIO_EXTENSIONS := true
 
 # inherit from the proprietary version
@@ -53,11 +53,8 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/lenovo/k1/bluetooth
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun/file"
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun/file"
 
-COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB -DICS_AUDIO_BLOB
-# ICS AUDIO
-COMMON_GLOBAL_CFLAGS += -DICS_AUDIO_BLOB
 # ICS CAMERA
-COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
+COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB -DICS_AUDIO_BLOB
 
 # Recovery Keymapping 
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/lenovo/k1/recovery/recovery_keys.c
