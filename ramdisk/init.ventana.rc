@@ -58,7 +58,7 @@ on post-fs-data
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
     mkdir /data/misc/pmlog 0770
-    mkdir /data/nvcam 0777 system system
+    mkdir /data/nvcam 0700 media camera
 
     mkdir /data/misc/wminput 0776 system system
 
