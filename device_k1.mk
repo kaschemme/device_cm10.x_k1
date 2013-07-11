@@ -379,7 +379,7 @@ $(call inherit-product-if-exists, vendor/lenovo/k1/k1-vendor.mk)
 # If CM_BUILDTYPE is not defined, set to UNOFFICIAL
 # Alternate options: EXPERIMENTAL, NIGHTLY or RELEASE
 CM_BUILDTYPE := NIGHTLY
-CM_EXTRAVERSION := "3G_v1.x"
+#CM_EXTRAVERSION := "3G_v1.x"
 
 # DEVICE_PACKAGE_OVERLAYS := \ $(LOCAL_PATH)/overlay
 
