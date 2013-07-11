@@ -34,7 +34,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)
 $(call inherit-product, device/lenovo/k1/device_k1.mk)
 
 # Enable xhdpi drawables while keeping mdpi as primary source
-PRODUCT_AAPT_CONFIG := normal mdpi hdpi xhdpi
+PRODUCT_AAPT_CONFIG := xlarge mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcm4329/Android.mk)
