@@ -32,6 +32,11 @@ else
 	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
 
+# Copy Recovery Image to the system folder
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/releasetools/recovery.img:system/recovery.img \
+    $(LOCAL_PATH)/releasetools/kaschemme.sh:system/etc/init.d/03recovery.sh
+
 # Files needed for boot image
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel \
