@@ -4,7 +4,8 @@
 # Ideapad K1 specific stuff
 #
 
-# include specific apps
+# include specific apps by Kaschemme
+# no longer needed, replaced by OTA Updater
 PRODUCT_COPY_FILES += \
         device/lenovo/k1/prebuilt/apps/com.s0up.goomanager-34-2.1.2.apk:system/app/com.s0up.goomanager-34-2.1.2.apk \
 
