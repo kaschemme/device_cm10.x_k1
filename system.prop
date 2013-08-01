@@ -5,6 +5,7 @@
 # This is a 16.16 fixed point number
 ro.opengles.version=131072
 ro.sf.lcd_density=160
+lockscreen.rot_override=true
 # Ethernet
 ro.ethernet.interface=eth0
 ro.ethernet.autoEnable=yes
@@ -21,4 +22,8 @@ ro.radio.noril=no
 # Goo Manager Information
 ro.goo.developerid=kaschemme
 ro.goo.rom=CM10.1_K1_3G_Kaschemme
-ro.goo.version=4
+ro.goo.version=6
+# OTA Updater
+otaupdater.otaid=cm10.1_k1_3g
+otaupdater.otatime=20130728-2000
+otaupdater.otaver=20130728
