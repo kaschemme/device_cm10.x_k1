@@ -48,10 +48,11 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/fstab.ventana:root/fstab.ventana \
     $(LOCAL_PATH)/prebuilt/sbin/gsm::root/sbin/gsm
 
-# include specific apps
+# include specific apps by Kaschemme
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/apps/com.jrummy.root.browserfree-203-v2.0.3.apk:system/app/com.jrummy.root.browserfree-203-v2.0.3.apk \
-    $(LOCAL_PATH)/apps/com.nolanlawson.logcat-39-v1.4.2.apk:system/app/com.nolanlawson.logcat-39-v1.4.2.apk
+    $(LOCAL_PATH)/apps/com.nolanlawson.logcat-39-v1.4.2.apk:system/app/com.nolanlawson.logcat-39-v1.4.2.apk \
+    $(LOCAL_PATH)/apps/OTAUpdater-1.0.5.apk:system/app/OTAUpdater-1.0.5.apk
 
 #/system/bin
 PRODUCT_COPY_FILES += \
@@ -356,8 +357,7 @@ PRODUCT_PACKAGES := \
 
 PRODUCT_PACKAGES += \
     Torch \
-    LiveWallpapersPicker \
-    PhotoTable \
+    LiveWallpapersPicker
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.secure=0
 
