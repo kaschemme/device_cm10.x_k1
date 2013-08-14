@@ -60,7 +60,7 @@ on post-fs-data
     mkdir /data/misc/wminput 0776 system system
 
 # camera calibration
-	mkdir /data/misc/camera 0770 media media
+#	mkdir /data/misc/camera 0770 media media
 
 #    # logs
 #    mkdir /data/log 0775 root root
@@ -97,8 +97,7 @@ on boot
     # bluetooth MAC address programming
     chown bluetooth net_bt_stack ro.bt.bdaddr_path
     chown bluetooth net_bt_stack /system/etc/bluetooth
-    chown bluetooth net_bt_stack /data/misc/bluetooth
-    setprop ro.bt.bdaddr_path "/data/misc/bluetooth/bdaddr"
+    setprop ro.bt.bdaddr_path "/system/etc/bluetooth/bdaddr"
 
     # bluetooth LPM
     chmod 0220 /proc/bluetooth/sleep/lpm
@@ -112,17 +111,17 @@ on boot
 # Sensor
     chmod 777 /dev/lightsensor
     chown root root /dev/lightsensor
-    chmod 0666 /dev/nvhost-ctrl
-    chmod 0666 /dev/nvhost-display
-    chmod 0666 /dev/nvhost-dsi
-    chmod 0666 /dev/nvhost-gr2d
-    chmod 0666 /dev/nvhost-gr3d
-    chmod 0666 /dev/nvhost-isp
-    chmod 0666 /dev/nvhost-mpe
-    chmod 0666 /dev/nvhost-vi
-    chmod 0664 /sys/bus/iio/devices/device0/illuminance0_input
-    chmod 0664 /sys/bus/iio/devices/device0/proximity_raw
-    chmod 0664 /sys/bus/iio/devices/device0/illuminance0_calibbias
+    chmod 666 /dev/nvhost-ctrl
+    chmod 666 /dev/nvhost-display
+    chmod 666 /dev/nvhost-dsi
+    chmod 666 /dev/nvhost-gr2d
+    chmod 666 /dev/nvhost-gr3d
+    chmod 666 /dev/nvhost-isp
+    chmod 666 /dev/nvhost-mpe
+    chmod 666 /dev/nvhost-vi
+    chmod 664 /sys/bus/iio/devices/device0/illuminance0_input
+    chmod 664 /sys/bus/iio/devices/device0/proximity_raw
+    chmod 664 /sys/bus/iio/devices/device0/illuminance0_calibbias
     write /sys/bus/iio/devices/device0/illuminance0_calibbias 8192
 
 
@@ -335,7 +334,7 @@ service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
 
 #BCM
 service hciattach /system/bin/brcm_patchram_plus --enable_hci --scopcm=0,2,0,0,0,0,0,0,0,0 \
-    --baudrate 3000000 --patchra /etc/firmware/bcm4329.hcd --enable_lpm --tosleep=5000 --create_bdaddr /dev/ttyHS2
+    --baudrate 3000000 --patchram /etc/firmware/bcm4329.hcd --enable_lpm /dev/ttyHS2
     class main
     user root
     group system bluetooth net_bt_admin misc
