@@ -19,10 +19,6 @@ ro.radio.use-ppp=yes
 ro.radio.noril=no
 #debug.performance.tuning=1
 #video.accelerate.hw=1
-# Goo Manager Information
-ro.goo.developerid=kaschemme
-ro.goo.rom=CM10.1_K1_3G_Kaschemme
-ro.goo.version=7
 # OTA Updater
 otaupdater.otaid=cm10.1_k1_3g
 otaupdater.otatime=20130810-2145
