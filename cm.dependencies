@@ -1,0 +1,8 @@
+[
+ {
+   "repository": "android_kernel_ideapad_k1",
+   "target_path": "kernel/lenovo/k1",
+   "branch": "master"
+ }
+]
+
