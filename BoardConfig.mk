@@ -1,4 +1,10 @@
+# This variable is set first, so it can be overridden
+# by BoardConfigVendor.mk
 USE_CAMERA_STUB := false
+
+# Use a smaller subset of system fonts to keep image size lower
+SMALLER_FONT_FOOTPRINT := true
+
 USE_PROPRIETARY_AUDIO_EXTENSIONS := true
 
 # inherit from the proprietary version
@@ -62,7 +68,7 @@ TARGET_RECOVERY_PRE_COMMAND := "/system/bin/misc_command FOTA"
 
 # Build kernel from source
 #TARGET_KERNEL_SOURCE := kernel/lenovo/k1
-#TARGET_KERNEL_CONFIG := cm10_current2_defconfig
+#TARGET_KERNEL_CONFIG := cm10_k1_defconfig
 
 # Prebuilt Kernel Fallback
 TARGET_PREBUILT_KERNEL := device/lenovo/k1/kernel
