@@ -21,5 +21,5 @@ ro.radio.noril=no
 #video.accelerate.hw=1
 # OTA Updater
 otaupdater.otaid=cm10.1_k1_3g
-otaupdater.otatime=20130916-2200
-otaupdater.otaver=20130916
+otaupdater.otatime=20130922-2100
+otaupdater.otaver=2013092
