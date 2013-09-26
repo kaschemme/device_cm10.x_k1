@@ -50,9 +50,9 @@ PRODUCT_COPY_FILES += \
 
 # include specific apps by Kaschemme
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/apps/com.jrummy.root.browserfree-203-v2.0.3.apk:system/app/com.jrummy.root.browserfree-203-v2.0.3.apk \
-    $(LOCAL_PATH)/apps/com.nolanlawson.logcat-39-v1.4.2.apk:system/app/com.nolanlawson.logcat-39-v1.4.2.apk \
-    $(LOCAL_PATH)/apps/OTAUpdater-1.0.5.apk:system/app/OTAUpdater-1.0.5.apk
+    $(LOCAL_PATH)/apps/CatLog_1.4.4.apk:system/app/CatLog_1.4.4.apk \
+    $(LOCAL_PATH)/apps/OTAUpdater_1.0.5.apk:system/app/OTAUpdater_1.0.5.apk \
+    $(LOCAL_PATH)/apps/RootBrowser_2.2.3.apk:system/app/RootBrowser_2.2.3.apk
 
 #/system/bin
 PRODUCT_COPY_FILES += \
