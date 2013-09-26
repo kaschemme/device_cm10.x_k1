@@ -103,7 +103,8 @@ PRODUCT_COPY_FILES += vendor/lenovo/k1/proprietary/etc/gps/gpsconfig.xml:system/
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/apns/apns-conf.xml:system/etc/apns-conf.xml
 
 # Boot Animation
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/prebuilt/bootanimation.zip:system/media/bootanimation.zip
+# doen't work with release version cm10.1.3
+#PRODUCT_COPY_FILES += $(LOCAL_PATH)/prebuilt/bootanimation.zip:system/media/bootanimation.zip
 
 #/system/etc/permissions
 PRODUCT_COPY_FILES += \
@@ -380,8 +381,7 @@ $(call inherit-product-if-exists, vendor/lenovo/k1/k1-vendor.mk)
 
 # If CM_BUILDTYPE is not defined, set to UNOFFICIAL
 # Alternate options: EXPERIMENTAL, NIGHTLY or RELEASE
-CM_BUILDTYPE := NIGHTLY
-#CM_EXTRAVERSION := "3G_v1.x"
+CM_BUILDTYPE := RELEASE
 
 # DEVICE_PACKAGE_OVERLAYS := \ $(LOCAL_PATH)/overlay
 
