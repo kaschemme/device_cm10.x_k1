@@ -87,30 +87,22 @@ on boot
 # bluetooth
     # UART device
     chmod 0660 /dev/ttyHS2
-    chown bluetooth net_bt_stack /dev/ttyHS2
+    chown bluetooth bluetooth /dev/ttyHS2
     # power up/down interface
     chmod 0660 /sys/class/rfkill/rfkill0/state
     chmod 0660 /sys/class/rfkill/rfkill0/type
-    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
-    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
 
     # bluetooth MAC address programming
-    chown bluetooth net_bt_stack ro.bt.bdaddr_path
-    chown bluetooth net_bt_stack /system/etc/bluetooth
+    chown bluetooth bluetooth ro.bt.bdaddr_path
+    chown bluetooth bluetooth /system/etc/bluetooth
     setprop ro.bt.bdaddr_path "/system/etc/bluetooth/bdaddr"
-
-    # bluetooth LPM
-    chmod 0220 /proc/bluetooth/sleep/lpm
-    chmod 0220 /proc/bluetooth/sleep/btwrite
-    chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
-    chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
 
 # backlight
     chown system system /sys/class/backlight/pwm-backlight/brightness
 
 # Sensor
-    chmod 777 /dev/lightsensor
-    chown root root /dev/lightsensor
     chmod 666 /dev/nvhost-ctrl
     chmod 666 /dev/nvhost-display
     chmod 666 /dev/nvhost-dsi
@@ -119,10 +111,8 @@ on boot
     chmod 666 /dev/nvhost-isp
     chmod 666 /dev/nvhost-mpe
     chmod 666 /dev/nvhost-vi
-    chmod 664 /sys/bus/iio/devices/device0/illuminance0_input
-    chmod 664 /sys/bus/iio/devices/device0/proximity_raw
-    chmod 664 /sys/bus/iio/devices/device0/illuminance0_calibbias
-    write /sys/bus/iio/devices/device0/illuminance0_calibbias 8192
+    chmod 664 /sys/bus/iio/devices/device0/lux
+    chmod 664 /sys/bus/iio/devices/device0/proxim_ir
 
 
 # Power management settings
@@ -163,7 +153,7 @@ on boot
     write /data/misc/wminput/connected 0
     chmod 0666 /data/misc/wminput/connected
 
-#GPS
+# GPS
     mkdir /data/gps
     chown gps system /data/gps
     chmod 770 /data/gps
@@ -312,20 +302,6 @@ service iprenew_bnep0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-# Enable NvCpuD, and set it to never poll config again
-on boot
-    setprop nvcpud.enabled true
-    setprop nvcpud.config_refresh_ms -1
-
-service nvcpud /system/bin/nvcpud
-    class main
-    user root
-    group root
-
-# Compal Earvin 20120309 begin
-on property:sys.cpu.late_start=1
-    start nvcpud
-
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # deamon will drop to user/group system/media_rw after initializing
 # underlying files in /data/media wil be created with user and group media_rw (1023)
@@ -333,11 +309,12 @@ service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class late_start
 
 #BCM
-service hciattach /system/bin/brcm_patchram_plus --enable_hci --scopcm=0,2,0,0,0,0,0,0,0,0 \
-    --baudrate 3000000 --patchram /etc/firmware/bcm4329.hcd --enable_lpm /dev/ttyHS2
+service hciattach /system/bin/brcm_patchram_plus --enable_hci \
+    --baudrate 3000000 --patchram /etc/firmware/bcm4329.hcd --pcm_role slave \
+    --enable_lpm /dev/ttyHS2
     class main
-    user root
-    group system bluetooth net_bt_admin misc
+    user bluetooth
+    group bluetooth net_bt_admin
     disabled
 
 # Start GPS daemon

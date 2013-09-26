@@ -52,7 +52,6 @@ BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_BLUEDROID_VENDOR_CONF := device/lenovo/k1/bluetooth/vnd_tf101.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/lenovo/k1/bluetooth
 
 # USB 
