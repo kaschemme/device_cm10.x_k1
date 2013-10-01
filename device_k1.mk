@@ -75,6 +75,10 @@ PRODUCT_COPY_FILES += \
 
 #/system/etc/firmware
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/etc/firmware/BCM4329B1_002.002.023.0797.0863.hcd:system/etc/firmware/BCM4329B1_002.002.023.0797.0863.hcd
+
+#/system/etc/firmware
+PRODUCT_COPY_FILES += \
     vendor/lenovo/k1/proprietary/etc/firmware/bcm4329.hcd:system/etc/firmware/bcm4329.hcd \
     vendor/lenovo/k1/proprietary/etc/firmware/bcm4330.hcd:system/etc/firmware/bcm4330.hcd \
     vendor/lenovo/k1/proprietary/nvram_4329.txt:system/etc/nvram_4329.txt \
@@ -381,7 +385,7 @@ $(call inherit-product-if-exists, vendor/lenovo/k1/k1-vendor.mk)
 
 # If CM_BUILDTYPE is not defined, set to UNOFFICIAL
 # Alternate options: EXPERIMENTAL, NIGHTLY or RELEASE
-CM_BUILDTYPE := RELEASE
+CM_BUILDTYPE := NIGHTLY
 
 # DEVICE_PACKAGE_OVERLAYS := \ $(LOCAL_PATH)/overlay
 
