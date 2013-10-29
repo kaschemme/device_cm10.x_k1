@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# 
-PRODUCT_PACKAGES := \
-	HoloSpiralWallpaper \
-	VisualizationWallpapers \
-	LiveWallpapersPicker
+# Live Wallpapers
+PRODUCT_PACKAGES += \
+        LiveWallpapers \
+        LiveWallpapersPicker \
+        MagicSmokeWallpapers \
+        VisualizationWallpapers \
+        librs_jni
+
+PRODUCT_PROPERTY_OVERRIDES := \
+        net.dns1=8.8.8.8 \
+        net.dns2=8.8.4.4
 
 # Camera
 PRODUCT_PACKAGES += \
